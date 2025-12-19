@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belorae | Product-Market Fit Intelligence</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        heading: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9', // Sky blue accent
+                            600: '#0284c7',
+                            900: '#0c4a6e', // Deep Navy
+                            950: '#082f49',
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* New Premium Hero Background */
+        .hero-bg {
+            background-color: #020617;
+            /* subtle noise texture */
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E"),
+            radial-gradient(circle at 50% 0%, #1e293b 0%, #0f172a 50%, #020617 100%);
+        }
+        
+        .hero-grid {
+            background-size: 50px 50px;
+            background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            mask-image: linear-gradient(to bottom, black 0%, transparent 80%);
+            -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 80%);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+        .glass-dark {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased font-sans selection:bg-brand-500 selection:text-white">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 transition-all duration-300 bg-white/80 backdrop-blur-md border-b border-slate-100" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer" onclick="window.scrollTo(0,0)">
+                     <!-- Placeholder for Logo Image if user wants to swap back -->
+                     <!-- <img src="./Screenshot 2025-12-19 at 11.47.21 AM.jpg" alt="Belorae Logo" class="h-10 w-auto rounded"> -->
+                     
+                    <div class="relative group">
+                        <div class="absolute -inset-1 bg-gradient-to-r from-brand-500 to-indigo-600 rounded-lg blur opacity-25 group-hover:opacity-50 transition duration-200"></div>
+                        <div class="relative w-10 h-10 bg-brand-950 rounded-lg flex items-center justify-center text-white font-heading font-bold text-xl shadow-xl">B</div>
+                    </div>
+                    <span class="text-2xl font-heading font-bold text-slate-900 tracking-tight">Belorae</span>
+                </div>
+                
+                <div class="hidden md:flex space-x-8 items-center">
+                    <a href="#services" class="text-sm font-medium text-slate-600 hover:text-brand-600 transition-colors">Our Analysis</a>
+                    <a href="#methodology" class="text-sm font-medium text-slate-600 hover:text-brand-600 transition-colors">Methodology</a>
+                    <a href="#clients" class="text-sm font-medium text-slate-600 hover:text-brand-600 transition-colors">Who We Serve</a>
+                    <a href="#contact" class="px-6 py-2.5 bg-slate-900 text-white text-sm font-medium rounded-full hover:bg-brand-600 transition-all shadow-lg hover:shadow-brand-500/30 transform hover:-translate-y-0.5">
+                        Get PMF Report
+                    </a>
+                </div>
+                
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="text-slate-600 hover:text-slate-900 p-2">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-slate-100 p-4 shadow-xl">
+            <div class="flex flex-col space-y-4">
+                <a href="#services" class="text-slate-600 font-medium p-2 hover:bg-slate-50 rounded-lg">Our Analysis</a>
+                <a href="#methodology" class="text-slate-600 font-medium p-2 hover:bg-slate-50 rounded-lg">Methodology</a>
+                <a href="#clients" class="text-slate-600 font-medium p-2 hover:bg-slate-50 rounded-lg">Who We Serve</a>
+                <a href="#contact" class="text-brand-600 font-bold p-2">Get PMF Report</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative pt-32 pb-24 lg:pt-48 lg:pb-40 overflow-hidden hero-bg text-white">
+        <!-- Ambient Lighting Effects (Subtle) -->
+        <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-blue-900/20 rounded-full blur-[100px] pointer-events-none"></div>
+        <div class="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-indigo-900/20 rounded-full blur-[100px] pointer-events-none"></div>
+        
+        <!-- Grid Pattern Overlay -->
+        <div class="absolute inset-0 hero-grid pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="flex flex-col items-center text-center">
+                <!-- Badge -->
+                <div class="inline-flex items-center gap-2 bg-slate-800/50 backdrop-blur-md border border-slate-700 rounded-full px-5 py-2 mb-10 animate-float shadow-lg">
+                    <span class="flex h-2.5 w-2.5 relative">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-500"></span>
+                    </span>
+                    <span class="text-sm font-semibold text-slate-200 tracking-wide">Global Market Intelligence</span>
+                </div>
+                
+                <!-- Main Heading -->
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-heading font-bold tracking-tight mb-8 leading-[1.1] drop-shadow-2xl">
+                    Product-Market Fit is <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-brand-100 to-slate-400">Evidence, Not Intuition.</span>
+                </h1>
+                
+                <!-- Subheading -->
+                <p class="max-w-2xl mx-auto text-lg md:text-xl text-slate-400 leading-relaxed mb-12 font-light">
+                    We help organizations confidently determine whether a product is genuinely ready for real-world adoption. Reduce failure risk and validate demand before capital is deployed.
+                </p>
+                
+                <!-- CTA Buttons -->
+                <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+                    <a href="#contact" class="px-8 py-4 bg-white text-slate-950 rounded-full font-bold text-lg hover:bg-brand-50 transition-all shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)] hover:scale-105 active:scale-95 duration-300">
+                        Validate Your Product
+                    </a>
+                    <a href="#services" class="px-8 py-4 bg-slate-800/40 border border-slate-700 text-white rounded-full font-medium text-lg hover:bg-slate-800/60 transition-all backdrop-blur-sm hover:scale-105 active:scale-95 duration-300">
+                        Explore Methodology
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-pulse-slow opacity-30">
+            <i data-lucide="chevron-down" class="w-10 h-10 text-white"></i>
+        </div>
+    </header>
+
+    <!-- Trust Badges / Stats -->
+    <section class="py-12 bg-white border-b border-slate-100 relative z-20 -mt-8 mx-4 md:mx-auto max-w-7xl rounded-2xl shadow-xl">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center divide-y md:divide-y-0 md:divide-x divide-slate-100 px-6">
+            <div class="group p-2">
+                <div class="text-4xl font-heading font-bold text-slate-900 mb-2 group-hover:text-brand-600 transition-colors">Data-Driven</div>
+                <div class="text-slate-500 text-sm font-bold uppercase tracking-widest">Quantitative & Qualitative</div>
+            </div>
+            <div class="group p-2">
+                <div class="text-4xl font-heading font-bold text-slate-900 mb-2 group-hover:text-brand-600 transition-colors">Global</div>
+                <div class="text-slate-500 text-sm font-bold uppercase tracking-widest">On-Ground Research</div>
+            </div>
+            <div class="group p-2">
+                <div class="text-4xl font-heading font-bold text-slate-900 mb-2 group-hover:text-brand-600 transition-colors">Actionable</div>
+                <div class="text-slate-500 text-sm font-bold uppercase tracking-widest">Go / No-Go Decisions</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Services Grid -->
+    <section id="services" class="py-32 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-20 reveal">
+                <h2 class="text-brand-600 font-bold tracking-widest uppercase text-sm mb-4">Comprehensive Evaluation</h2>
+                <h3 class="text-4xl md:text-5xl font-heading font-bold text-slate-900 mb-6">Deep Behavioral Insights</h3>
+                <p class="text-slate-600 text-xl leading-relaxed">We go beyond surface-level surveys to analyze how real users think, behave, and decide in their natural environments.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Service Cards with hover effects -->
+                <div class="glass-card p-10 rounded-3xl shadow-sm hover:shadow-2xl transition-all duration-500 group relative overflow-hidden reveal">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-red-50 rounded-bl-full -mr-16 -mt-16 transition-transform group-hover:scale-150 duration-500"></div>
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center mb-8 shadow-md group-hover:scale-110 transition-transform duration-300">
+                            <i data-lucide="shield-alert" class="w-7 h-7 text-red-500"></i>
+                        </div>
+                        <h4 class="text-2xl font-heading font-bold text-slate-900 mb-4">Product Viability & Risk</h4>
+                        <p class="text-slate-600 leading-relaxed">Identify core failure reasons: pricing, positioning, usability, timing, and differentiation. Assess competitive pressure and substitute risks.</p>
+                    </div>
+                </div>
+
+                <div class="glass-card p-10 rounded-3xl shadow-sm hover:shadow-2xl transition-all duration-500 group relative overflow-hidden reveal">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-brand-50 rounded-bl-full -mr-16 -mt-16 transition-transform group-hover:scale-150 duration-500"></div>
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center mb-8 shadow-md group-hover:scale-110 transition-transform duration-300">
+                            <i data-lucide="users" class="w-7 h-7 text-brand-600"></i>
+                        </div>
+                        <h4 class="text-2xl font-heading font-bold text-slate-900 mb-4">Customer Segmentation</h4>
+                        <p class="text-slate-600 leading-relaxed">Identify high-intent segments. Analyze demand strength across geographies, income levels, and professions with willingness-to-pay checks.</p>
+                    </div>
+                </div>
+
+                <div class="glass-card p-10 rounded-3xl shadow-sm hover:shadow-2xl transition-all duration-500 group relative overflow-hidden reveal">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-bl-full -mr-16 -mt-16 transition-transform group-hover:scale-150 duration-500"></div>
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center mb-8 shadow-md group-hover:scale-110 transition-transform duration-300">
+                            <i data-lucide="activity" class="w-7 h-7 text-emerald-500"></i>
+                        </div>
+                        <h4 class="text-2xl font-heading font-bold text-slate-900 mb-4">Real-World Usage</h4>
+                        <p class="text-slate-600 leading-relaxed">Understand how users actually intend to use the product vs. claims. Validate use-cases and identify behavioral friction points.</p>
+                    </div>
+                </div>
+
+                <div class="glass-card p-10 rounded-3xl shadow-sm hover:shadow-2xl transition-all duration-500 group relative overflow-hidden reveal">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-orange-50 rounded-bl-full -mr-16 -mt-16 transition-transform group-hover:scale-150 duration-500"></div>
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center mb-8 shadow-md group-hover:scale-110 transition-transform duration-300">
+                            <i data-lucide="bar-chart-2" class="w-7 h-7 text-orange-500"></i>
+                        </div>
+                        <h4 class="text-2xl font-heading font-bold text-slate-900 mb-4">Demographic Adoption</h4>
+                        <p class="text-slate-600 leading-relaxed">Analyze age-based expectations, usability preferences, and trust. Uncover cross-generation challenges and opportunities.</p>
+                    </div>
+                </div>
+
+                <div class="glass-card p-10 rounded-3xl shadow-sm hover:shadow-2xl transition-all duration-500 group relative overflow-hidden reveal">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-purple-50 rounded-bl-full -mr-16 -mt-16 transition-transform group-hover:scale-150 duration-500"></div>
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center mb-8 shadow-md group-hover:scale-110 transition-transform duration-300">
+                            <i data-lucide="layout" class="w-7 h-7 text-purple-500"></i>
+                        </div>
+                        <h4 class="text-2xl font-heading font-bold text-slate-900 mb-4">Experience & Design</h4>
+                        <p class="text-slate-600 leading-relaxed">End-to-end review of packaging, interface, onboarding, and clarity. Identify gaps affecting conversion and retention.</p>
+                    </div>
+                </div>
+
+                <div class="glass-card p-10 rounded-3xl shadow-sm hover:shadow-2xl transition-all duration-500 group relative overflow-hidden reveal">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-bl-full -mr-16 -mt-16 transition-transform group-hover:scale-150 duration-500"></div>
+                    <div class="relative z-10">
+                        <div class="w-14 h-14 bg-white rounded-2xl flex items-center justify-center mb-8 shadow-md group-hover:scale-110 transition-transform duration-300">
+                            <i data-lucide="target" class="w-7 h-7 text-blue-600"></i>
+                        </div>
+                        <h4 class="text-2xl font-heading font-bold text-slate-900 mb-4">Market Perception</h4>
+                        <p class="text-slate-600 leading-relaxed">Evaluate product perception vs. competitors. Test value proposition clarity and messaging effectiveness.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Feature Section -->
+    <section class="py-32 bg-slate-950 text-white overflow-hidden relative">
+        <div class="absolute top-0 left-0 w-full h-full opacity-10" style="background-image: url('https://www.transparenttextures.com/patterns/cubes.png');"></div>
+        <!-- Gradient overlay -->
+        <div class="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-900 to-brand-950 opacity-90"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-20 items-center">
+                <div class="reveal">
+                    <div class="inline-block px-4 py-2 bg-brand-900/50 rounded-full border border-brand-700/50 text-brand-300 text-sm font-bold mb-6">GLOBAL REACH</div>
+                    <h2 class="text-4xl md:text-6xl font-heading font-bold mb-8 leading-tight">We Don't Guess.<br>We Go On-Ground.</h2>
+                    <p class="text-slate-300 text-lg mb-8 leading-relaxed">
+                        When deeper validation is required, we conduct region-specific research across multiple countries. Generalized assumptions lead to failure; localized insights lead to growth.
+                    </p>
+                    <ul class="space-y-6">
+                        <li class="flex items-start group">
+                            <div class="w-8 h-8 rounded-full bg-brand-900/50 flex items-center justify-center mr-4 group-hover:bg-brand-500 transition-colors">
+                                <i data-lucide="check" class="w-5 h-5 text-brand-400 group-hover:text-white"></i>
+                            </div>
+                            <span class="text-lg text-slate-200">Cultural and behavioral alignment checks</span>
+                        </li>
+                        <li class="flex items-start group">
+                            <div class="w-8 h-8 rounded-full bg-brand-900/50 flex items-center justify-center mr-4 group-hover:bg-brand-500 transition-colors">
+                                <i data-lucide="check" class="w-5 h-5 text-brand-400 group-hover:text-white"></i>
+                            </div>
+                            <span class="text-lg text-slate-200">Localized demand assessment</span>
+                        </li>
+                        <li class="flex items-start group">
+                            <div class="w-8 h-8 rounded-full bg-brand-900/50 flex items-center justify-center mr-4 group-hover:bg-brand-500 transition-colors">
+                                <i data-lucide="check" class="w-5 h-5 text-brand-400 group-hover:text-white"></i>
+                            </div>
+                            <span class="text-lg text-slate-200">Regulatory and market-specific constraints analysis</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="glass-dark rounded-3xl p-10 border border-white/10 relative reveal delay-200">
+                    <div class="absolute -top-10 -right-10 w-40 h-40 bg-brand-500 rounded-full blur-[80px] opacity-20"></div>
+                    <div class="flex items-center mb-8">
+                        <div class="p-4 bg-brand-600 rounded-2xl mr-6 shadow-lg shadow-brand-500/20">
+                            <i data-lucide="globe-2" class="w-10 h-10 text-white"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-heading font-bold">Region-Wise Evaluation</h3>
+                            <p class="text-brand-300">Accurate, Localized, Decision-Ready</p>
+                        </div>
+                    </div>
+                    <p class="text-slate-300 text-xl italic leading-relaxed border-l-4 border-brand-500 pl-6">
+                        "We enable organizations to optimize market entry strategies and validate demand before significant capital is deployed."
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Clients Section -->
+    <section id="clients" class="py-32 bg-white relative">
+         <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent"></div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-20 reveal">
+                <h2 class="text-4xl md:text-5xl font-heading font-bold text-slate-900 mb-6">Who We Serve</h2>
+                <p class="text-xl text-slate-600">Tailored insights for every stage of growth.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <!-- Client Card 1 -->
+                <div class="group p-8 bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl hover:border-brand-200 transition-all duration-300 text-center reveal">
+                    <div class="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-6 text-brand-600 group-hover:scale-110 transition-transform">
+                        <i data-lucide="rocket" class="w-10 h-10"></i>
+                    </div>
+                    <h3 class="font-heading font-bold text-xl mb-3">Early-Stage Startups</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">Validating product ideas before launch to ensure market need.</p>
+                </div>
+
+                <!-- Client Card 2 -->
+                <div class="group p-8 bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl hover:border-purple-200 transition-all duration-300 text-center reveal delay-100">
+                    <div class="w-20 h-20 bg-purple-50 rounded-full flex items-center justify-center mx-auto mb-6 text-purple-600 group-hover:scale-110 transition-transform">
+                        <i data-lucide="trending-up" class="w-10 h-10"></i>
+                    </div>
+                    <h3 class="font-heading font-bold text-xl mb-3">Growth-Stage</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">Preparing for scale or entering new geographical markets.</p>
+                </div>
+
+                <!-- Client Card 3 -->
+                <div class="group p-8 bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl hover:border-indigo-200 transition-all duration-300 text-center reveal delay-200">
+                    <div class="w-20 h-20 bg-indigo-50 rounded-full flex items-center justify-center mx-auto mb-6 text-indigo-600 group-hover:scale-110 transition-transform">
+                        <i data-lucide="building-2" class="w-10 h-10"></i>
+                    </div>
+                    <h3 class="font-heading font-bold text-xl mb-3">Large Enterprises</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">MNCs launching new products or business lines.</p>
+                </div>
+
+                <!-- Client Card 4 -->
+                <div class="group p-8 bg-white rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl hover:border-emerald-200 transition-all duration-300 text-center reveal delay-300">
+                    <div class="w-20 h-20 bg-emerald-50 rounded-full flex items-center justify-center mx-auto mb-6 text-emerald-600 group-hover:scale-110 transition-transform">
+                        <i data-lucide="pie-chart" class="w-10 h-10"></i>
+                    </div>
+                    <h3 class="font-heading font-bold text-xl mb-3">Investors</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed">Seeking independent PMF validation before funding.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Methodology/Philosophy -->
+    <section id="methodology" class="py-32 bg-slate-50 border-t border-slate-200">
+        <div class="max-w-4xl mx-auto px-4 text-center reveal">
+            <h2 class="text-3xl font-heading font-bold mb-12 text-slate-900">What Our Clients Gain</h2>
+            <div class="grid md:grid-cols-2 gap-8 text-left">
+                <div class="flex gap-4 p-6 bg-white rounded-xl shadow-sm border border-slate-100">
+                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+                         <i data-lucide="check" class="w-5 h-5 text-green-600"></i>
+                    </div>
+                    <span class="text-lg text-slate-700 font-medium">Clear go / no-go decisions backed by rigorous data</span>
+                </div>
+                <div class="flex gap-4 p-6 bg-white rounded-xl shadow-sm border border-slate-100">
+                     <div class="flex-shrink-0 w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+                         <i data-lucide="check" class="w-5 h-5 text-green-600"></i>
+                    </div>
+                    <span class="text-lg text-slate-700 font-medium">Reduced product and market entry risk</span>
+                </div>
+                <div class="flex gap-4 p-6 bg-white rounded-xl shadow-sm border border-slate-100">
+                     <div class="flex-shrink-0 w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+                         <i data-lucide="check" class="w-5 h-5 text-green-600"></i>
+                    </div>
+                    <span class="text-lg text-slate-700 font-medium">Stronger alignment between product, users, and market</span>
+                </div>
+                <div class="flex gap-4 p-6 bg-white rounded-xl shadow-sm border border-slate-100">
+                     <div class="flex-shrink-0 w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+                         <i data-lucide="check" class="w-5 h-5 text-green-600"></i>
+                    </div>
+                    <span class="text-lg text-slate-700 font-medium">Confidence before investing in manufacturing or expansion</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <!-- Contact Section (Premium Revamp) -->
+<section id="contact" class="relative py-40 overflow-hidden bg-slate-950 text-white">
+
+    <!-- Background Effects -->
+    <div class="absolute inset-0">
+        <div class="absolute inset-0 bg-gradient-to-br from-slate-950 via-slate-900 to-brand-950"></div>
+        <div class="absolute top-[-20%] left-[-10%] w-[40rem] h-[40rem] bg-brand-600/20 rounded-full blur-[160px]"></div>
+        <div class="absolute bottom-[-20%] right-[-10%] w-[40rem] h-[40rem] bg-indigo-600/20 rounded-full blur-[160px]"></div>
+        <div class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-15"></div>
+    </div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-20 items-center">
+
+            <!-- Left Content -->
+            <div class="reveal">
+                <span class="inline-block mb-6 px-5 py-2 rounded-full bg-white/10 border border-white/20 text-sm font-bold tracking-widest text-brand-300">
+                    CONTACT US
+                </span>
+
+                <h2 class="text-4xl md:text-6xl font-heading font-bold leading-tight mb-8">
+                    Make Confident <br>
+                    <span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-brand-200 to-slate-400">
+                        Go / No-Go Decisions
+                    </span>
+                </h2>
+
+                <p class="text-slate-300 text-lg leading-relaxed max-w-xl mb-12">
+                    Whether you're validating an idea, preparing for scale, or assessing investment risk —
+                    our PMF intelligence gives you clarity before capital is committed.
+                </p>
+
+                <!-- Trust Points -->
+                <div class="space-y-6">
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-brand-600/20 flex items-center justify-center">
+                            <i data-lucide="shield-check" class="w-5 h-5 text-brand-400"></i>
+                        </div>
+                        <span class="text-slate-200">Confidential & independent analysis</span>
+                    </div>
+
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-brand-600/20 flex items-center justify-center">
+                            <i data-lucide="bar-chart-3" class="w-5 h-5 text-brand-400"></i>
+                        </div>
+                        <span class="text-slate-200">Actionable, board-ready insights</span>
+                    </div>
+
+                    <div class="flex items-center gap-4">
+                        <div class="w-10 h-10 rounded-full bg-brand-600/20 flex items-center justify-center">
+                            <i data-lucide="globe" class="w-5 h-5 text-brand-400"></i>
+                        </div>
+                        <span class="text-slate-200">Global & on-ground research capability</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Card -->
+            <div class="relative reveal delay-200">
+                <div class="absolute -inset-1 bg-gradient-to-r from-brand-500 to-indigo-600 rounded-3xl blur opacity-30"></div>
+
+                <div class="relative bg-white text-slate-900 rounded-3xl p-10 md:p-12 shadow-2xl">
+                    <h3 class="text-2xl font-heading font-bold mb-2">
+                        Request a PMF Consultation
+                    </h3>
+                    <p class="text-slate-500 mb-8">
+                        Tell us about your product — we’ll take it from here.
+                    </p>
+
+                    <form id="contactForm" action="https://script.google.com/macros/s/AKfycbw15_Updbo37RqRJCTRNSAceqad89WkfhUVtCIoTBkqV_zNHmMlFI4gFtemq0Ca_aY1Ww/exec" method="POST" target="hidden_iframe" onsubmit="return handleSubmit(event)" class="space-y-6">
+
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <input type="text" id="firstName" name="firstName" required
+                                placeholder="First name"
+                                class="w-full px-4 py-4 rounded-xl border border-slate-200 focus:ring-2 focus:ring-brand-300 focus:border-brand-500 outline-none bg-slate-50">
+
+                            <input type="text" id="lastName" name="lastName" required
+                                placeholder="Last name"
+                                class="w-full px-4 py-4 rounded-xl border border-slate-200 focus:ring-2 focus:ring-brand-300 focus:border-brand-500 outline-none bg-slate-50">
+                        </div>
+
+                        <input type="email" id="email" name="email" required
+                            placeholder="Work email"
+                            class="w-full px-4 py-4 rounded-xl border border-slate-200 focus:ring-2 focus:ring-brand-300 focus:border-brand-500 outline-none bg-slate-50">
+
+                        <select id="subject" name="subject"
+                            class="w-full px-4 py-4 rounded-xl border border-slate-200 focus:ring-2 focus:ring-brand-300 focus:border-brand-500 outline-none bg-slate-50">
+                            <option>Product-Market Fit Analysis</option>
+                            <option>Market Entry Validation</option>
+                            <option>Investor Due Diligence</option>
+                            <option>General Inquiry</option>
+                        </select>
+
+                        <textarea id="message" name="message" rows="4" required
+                            placeholder="Briefly describe your product or challenge…"
+                            class="w-full px-4 py-4 rounded-xl border border-slate-200 focus:ring-2 focus:ring-brand-300 focus:border-brand-500 outline-none bg-slate-50 resize-none"></textarea>
+
+                        <button type="submit"
+                            class="w-full py-4 bg-slate-900 text-white font-bold rounded-xl hover:bg-brand-600 transition-all shadow-lg hover:shadow-brand-500/40 flex items-center justify-center gap-2">
+                            Submit Request
+                            <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        </button>
+                    </form>
+
+                    <p class="text-xs text-center text-slate-400 mt-6">
+                        We typically respond within 24 hours.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+    <!-- Simple Footer -->
+    <footer class="bg-slate-950 text-slate-500 py-8 border-t border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-2">
+                <div class="w-6 h-6 bg-brand-800 rounded flex items-center justify-center text-white font-bold text-xs">B</div>
+                <span class="font-bold text-slate-300">Belorae</span>
+            </div>
+            <div class="text-sm">
+                &copy; 2025 Belorae Intelligence. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Thank You Modal -->
+    <div id="thankYouModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden animate-in fade-in zoom-in duration-300">
+            <!-- Gradient Top Bar -->
+            <div class="h-1 bg-gradient-to-r from-brand-500 via-indigo-500 to-brand-600"></div>
+            
+            <div class="p-10 text-center">
+                <!-- Success Icon -->
+                <div class="flex justify-center mb-6">
+                    <div class="relative">
+                        <div class="absolute inset-0 bg-brand-100 rounded-full blur-xl opacity-50"></div>
+                        <div class="relative w-20 h-20 bg-gradient-to-br from-brand-500 to-indigo-600 rounded-full flex items-center justify-center shadow-lg">
+                            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Title -->
+                <h2 class="text-3xl font-heading font-bold text-slate-900 mb-3">
+                    Thank You!
+                </h2>
+
+                <!-- Message -->
+                <p class="text-slate-600 leading-relaxed mb-2">
+                    Your inquiry has been received.
+                </p>
+                <p class="text-slate-500 text-sm mb-8">
+                    We'll get back to you within 24 hours with valuable insights.
+                </p>
+
+                <!-- Close Button -->
+                <button onclick="closeThankYouModal()" class="w-full py-3 bg-gradient-to-r from-brand-500 to-indigo-600 text-white font-bold rounded-xl hover:shadow-lg hover:shadow-brand-500/30 transition-all duration-300 active:scale-95">
+                    Got it!
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Lucide Icons
+        lucide.createIcons();
+
+        // Reveal Animation on Scroll
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 150;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        // Trigger once on load
+        reveal();
+
+        // Create hidden iframe for form submission
+        window.addEventListener('DOMContentLoaded', function() {
+            if (!document.getElementById('hidden_iframe')) {
+                const iframe = document.createElement('iframe');
+                iframe.id = 'hidden_iframe';
+                iframe.name = 'hidden_iframe';
+                iframe.style.display = 'none';
+                document.body.appendChild(iframe);
+            }
+        });
+
+        // Thank You Modal Functions
+        function showThankYouModal() {
+            const modal = document.getElementById('thankYouModal');
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeThankYouModal() {
+            const modal = document.getElementById('thankYouModal');
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('thankYouModal')?.addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeThankYouModal();
+            }
+        });
+
+        // Close on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeThankYouModal();
+            }
+        });
+
+        // Contact Form Handler
+        function handleSubmit(e) {
+            e.preventDefault();
+
+            const form = document.getElementById('contactForm');
+            const submitButton = form.querySelector('button[type="submit"]');
+            const originalText = submitButton.innerHTML;
+
+            // Show loading state
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i data-lucide="loader" class="w-5 h-5 animate-spin"></i> Sending...';
+            lucide.createIcons();
+
+            // Submit form to Google Apps Script
+            form.submit();
+
+            // Show thank you modal after a brief delay
+            setTimeout(function() {
+                showThankYouModal();
+                form.reset();
+                submitButton.disabled = false;
+                submitButton.innerHTML = originalText;
+                lucide.createIcons();
+            }, 1500);
+
+            return false;
+        }
+    </script>
+</body>
+</html>
